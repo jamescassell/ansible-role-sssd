@@ -62,3 +62,12 @@
   - name: assume 1.5.1 (RHEL 5) on version check failure
     set_fact:
       sssd_version_check: "{{ sssd_version_check | combine(dict(stdout='1.5.1')) }}"
+
+- name: symlink main sssd.conf on snippet-supporting versions
+  file:
+    dest: /etc/sssd/sssd.conf
+    src: /etc/sssd/conf.d/00-sssd.conf
+    state: link
+    owner: "{{ sssd_user }}"
+    group: "{{ sssd_user }}"
+  when: sssd_version is version_compare(sssd_version_config_snippet_supported, '>=')
