@@ -1,0 +1,8 @@
+---
+# tasks file for sssd
+
+- name: install sssd packages ({{ sssd_packages | join(', ') }})
+  package:
+    name: "{{ sssd_packages }}"
+  tags:
+  - packages

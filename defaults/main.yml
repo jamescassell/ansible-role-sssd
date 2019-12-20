@@ -1,0 +1,7 @@
+---
+# defaults file for sssd
+
+sssd_packages: "{{ [sssd_old_distro | ternary('sssd', 'sssd-common')] }}"
+sssd_old_distro: >-
+  {{ ansible_os_family == 'RedHat' and ansible_distribution_major_version | int < 6 or
+  ansible_os_family == 'Debian' and ansible_distribution_major_version | int < 14 }}
