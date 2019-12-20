@@ -6,3 +6,41 @@
     name: "{{ sssd_packages }}"
   tags:
   - packages
+
+
+- name: configure sssd.conf
+  block:
+  - name: create config snippet directory
+    file:
+      dest: /etc/sssd/conf.d
+      state: directory
+      mode: '0644'
+
+  - name: check for conf.d/00-sssd.conf
+    file: &00_sssd_file
+      dest: /etc/sssd/conf.d/00-sssd.conf
+      state: file
+      mode: '0600'
+      owner: "{{ sssd_user }}"
+      group: "{{ sssd_user }}"
+
+  rescue:
+  - name: workaround for https://github.com/ansible/ansible/issues/61253
+    meta: noop
+
+  - name: check for sssd.conf
+    block:
+    - name: copy conf.d/00-sssd.conf from sssd.conf
+      copy:
+        dest: /etc/sssd/conf.d/00-sssd.conf
+        src: /etc/sssd/sssd.conf
+        remote_src: yes
+        mode: '0600'
+        owner: "{{ sssd_user }}"
+        group: "{{ sssd_user }}"
+
+    rescue:
+    - name: create empty sssd.conf
+      file:
+        <<: *00_sssd_file
+        state: touch
