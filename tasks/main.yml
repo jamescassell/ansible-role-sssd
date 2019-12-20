@@ -45,3 +45,20 @@
       file:
         <<: *00_sssd_file
         state: touch
+
+- name: find sssd version
+  block:
+  - name: find sssd version
+    command: sssd --version
+    check_mode: no
+    changed_when: no
+    register: sssd_version_check
+  rescue:
+  - name: older sssd returns 1 for 'sssd --version'
+    assert:
+      that: sssd_version_check.rc == 1
+
+  # TODO: rpm -q sssd --queryformat '%{RPMTAG_VERSION}'
+  - name: assume 1.5.1 (RHEL 5) on version check failure
+    set_fact:
+      sssd_version_check: "{{ sssd_version_check | combine(dict(stdout='1.5.1')) }}"

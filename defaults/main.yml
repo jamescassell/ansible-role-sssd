@@ -7,3 +7,5 @@ sssd_old_distro: >-
   ansible_os_family == 'Debian' and ansible_distribution_major_version | int < 14 }}
 
 sssd_user: root
+
+sssd_version: "{{ sssd_version_check.stdout }}"
