@@ -79,3 +79,12 @@
     option: config_file_version
     value: 2
   when: sssd_version is version_compare(sssd_version_config_file_version_not_req, '<')
+
+- name: check if any domains are configured
+  meta: noop
+
+- name: configure implicit_files if no domains configured
+  meta: noop
+
+- name: enable at least one service (nss)
+  meta: noop
