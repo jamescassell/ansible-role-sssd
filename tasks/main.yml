@@ -88,3 +88,14 @@
 
 - name: enable at least one service (nss)
   meta: noop
+
+- name: create sssd.conf on versions that don't support snippets
+  assemble:
+    dest: /etc/sssd/sssd.conf
+    src: /etc/sssd/conf.d
+    ignore_hidden: yes
+    regexp: '\.conf'
+    mode: '0600'
+    owner: "{{ sssd_user }}"
+    group: "{{ sssd_user }}"
+  when: sssd_version is version_compare(sssd_version_config_snippet_supported, '<')
