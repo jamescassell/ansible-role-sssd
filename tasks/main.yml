@@ -19,10 +19,11 @@
   - name: check for conf.d/00-sssd.conf
     file: &00_sssd_file
       dest: /etc/sssd/conf.d/00-sssd.conf
-      state: file
       mode: '0600'
       owner: "{{ sssd_user }}"
       group: "{{ sssd_user }}"
+    args:
+      state: file
 
   rescue:
   - name: workaround for https://github.com/ansible/ansible/issues/61253
