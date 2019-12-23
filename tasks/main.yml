@@ -68,6 +68,7 @@
     dest: /etc/sssd/sssd.conf
     src: /etc/sssd/conf.d/00-sssd.conf
     state: link
+    force: "{{ ansible_check_mode }}"
     owner: "{{ sssd_user }}"
     group: "{{ sssd_user }}"
   when: sssd_version is version_compare(sssd_version_config_snippet_supported, '>=')
