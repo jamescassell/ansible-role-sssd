@@ -1,6 +1,13 @@
 ---
 # tasks file for sssd
 
+- name: gather necessary facts
+  setup:
+    gather_subset: "{{ ansible_version.full is version_compare('2.4', '>=') | ternary('distribution', '!all') }}"
+  when:
+  - ansible_os_family is not defined or
+    ansible_distribution_major_version is not defined
+
 - name: install sssd packages ({{ sssd_packages | join(', ') }})
   package:
     name: "{{ sssd_packages }}"
