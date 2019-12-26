@@ -104,7 +104,7 @@
     dest: /etc/sssd/sssd.conf
     src: /etc/sssd/conf.d
     ignore_hidden: yes
-    regexp: '\.conf'
+    regexp: '\.conf$'
     mode: '0600'
     owner: "{{ sssd_user }}"
     group: "{{ sssd_user }}"
