@@ -23,7 +23,7 @@
     file:
       dest: /etc/sssd/conf.d
       state: directory
-      mode: '0644'
+      mode: u+rwx,go+x
 
   - name: check for conf.d/00-sssd.conf
     file: &00_sssd_file
